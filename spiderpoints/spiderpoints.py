@@ -3,10 +3,15 @@ from spiderpoints.kml_to_gpx_converter import Converter, KMLCreator
 
 
 class InputsParser:
-    def __init__(self, first_point, number_of_points, distance_between_points):
+    def __init__(self, first_point: str, number_of_points: int, distance_between_points:int):
         self.first_point = self.__coord_str_to_float_tuple(first_point)
         self.nums_points = number_of_points
         self.d = distance_between_points
+
+    @staticmethod
+    def __coord_str_to_float_tuple(coordinates: str) -> tuple[float, float]:
+        lat_grid, long_grid = coordinates.split(",")
+        return float(lat_grid.strip()), float(long_grid.strip())
 
     @staticmethod
     def __oblicz_wspolrzedne_p2(point: tuple[float, float], d: int, bearing: int = 90):
@@ -18,22 +23,19 @@ class InputsParser:
 
         return lat_p2, lon_p2
 
-    @staticmethod
-    def __coord_str_to_float_tuple(coordinates: str) -> tuple[float, float]:
-        lat_grid, long_grid = coordinates.split(",")
-        return float(lat_grid.strip()), float(long_grid.strip())
-
-    def generate_points(self, *bearing) -> list:
-        lista_punktow = [self.first_point]  # Dodajemy pierwszy punkt P1 do listy
+    def generate_points(self, point,  *bearing) -> list:
+        lista_punktow = [point]  # Dodajemy pierwszy punkt P1 do listy
         for _ in range(self.nums_points - 1):
             # Obliczamy współrzędne kolejnego punktu i dodajemy go do listy
-            point = self.__oblicz_wspolrzedne_p2(self.first_point, self.d, *bearing)
+            point = self.__oblicz_wspolrzedne_p2(point, self.d, *bearing)
             lista_punktow.append(point)
         return lista_punktow
 
 
 class SpiderPoints:
-    def __init__(self, initial_coordinates, number_of_points, distance_between_points):
+    """ Provide vars of type string."""
+
+    def __init__(self, initial_coordinates: str, number_of_points: str, distance_between_points: str):
         self.initial_coordinates = initial_coordinates
         self.number_of_points = int(number_of_points)
         self.distance_between_points = int(distance_between_points)
@@ -44,11 +46,11 @@ class SpiderPoints:
             self.number_of_points,
             self.distance_between_points
         )
-        lista_punktow_bearing_90 = inputs.generate_points(90)
+        lista_punktow_bearing_90 = inputs.generate_points(inputs.first_point, 90)
 
         grid = []
         for punkt in lista_punktow_bearing_90:
-            punkty_w_dol = inputs.generate_points(180)
+            punkty_w_dol = inputs.generate_points(punkt,180)
 
             grid.extend(punkty_w_dol)
         return grid
