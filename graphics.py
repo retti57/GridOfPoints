@@ -1,5 +1,5 @@
 import tkinter as tk
-from spiderpoints.spiderpoints import main, convert_to_gpx
+from spiderpoints.spiderpoints import convert_to_gpx, SpiderPoints
 
 
 def generate_kml():
@@ -8,8 +8,11 @@ def generate_kml():
     distance = entry_distance.get()
     # Tutaj umieść logikę generowania pliku KML na podstawie wprowadzonych danych
 
-    main(initial_coordinates=point_coord, number_of_points=int(occurrence), distance_between_points=int(distance))
-    convert_to_gpx("punkty.kml", "punkty.gpx")
+    SpiderPoints(
+        initial_coordinates=point_coord,
+        number_of_points=int(occurrence),
+        distance_between_points=int(distance)
+    ).create_kml_gpx()
 
 
 # Tworzenie głównego okna
