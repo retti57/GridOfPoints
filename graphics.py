@@ -1,5 +1,5 @@
 import tkinter as tk
-from spiderpoints.spiderpoints import convert_to_gpx, SpiderPoints
+from spiderpoints.spiderpoints import SpiderPoints
 
 
 def generate_kml():

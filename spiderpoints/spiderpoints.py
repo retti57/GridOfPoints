@@ -1,8 +1,5 @@
-import random
 from geopy.distance import distance
-import pandas as pd
-import simplekml
-from spiderpoints.kml_to_gpx_converter import convert_to_gpx
+from spiderpoints.kml_to_gpx_converter import Converter, KMLCreator
 
 
 class InputsParser:
@@ -35,12 +32,11 @@ class InputsParser:
         return lista_punktow
 
 
-
 class SpiderPoints:
     def __init__(self, initial_coordinates, number_of_points, distance_between_points):
         self.initial_coordinates = initial_coordinates
-        self.number_of_points = number_of_points
-        self.distance_between_points = distance_between_points
+        self.number_of_points = int(number_of_points)
+        self.distance_between_points = int(distance_between_points)
 
     def _list_points(self) -> list:
         inputs = InputsParser(
@@ -49,11 +45,7 @@ class SpiderPoints:
             self.distance_between_points
         )
         lista_punktow_bearing_90 = inputs.generate_points(90)
-        # initial_coord = _coord_str_to_float_tuple(self.initial_coordinates)
 
-        # lista_punktow_bearing_90 = generate_list_of_points(initial_coord, self.number_of_points,
-        #                                                    self.distance_between_points,
-        #                                                    90)
         grid = []
         for punkt in lista_punktow_bearing_90:
             punkty_w_dol = inputs.generate_points(180)
@@ -68,37 +60,13 @@ class SpiderPoints:
         grid = self._list_points()
 
         nazwa_pliku_kml = "punkty.kml"
-        create_kml_file(grid, nazwa_pliku_kml, self.number_of_points)
-        convert_to_gpx(nazwa_pliku_kml, "punkty.gpx")
+        KMLCreator(
+            list_of_points=grid,
+            filename=nazwa_pliku_kml,
+            number_of_points=self.number_of_points
+        ).create_kml_file()
+        Converter(
+            kml_filename=nazwa_pliku_kml
+        ).convert_to_gpx(gpx_filename="punkty.gpx")
+
         return len(grid)
-
-
-
-def create_kml_file(list_of_points: list, filename: str, number_of_points):
-    import string
-    letters = string.ascii_uppercase
-    digits = list(range(number_of_points))
-    letter_index = -1
-    counter = 0
-
-    kml = simplekml.Kml()
-    for punkt in list_of_points:
-        random.shuffle(digits)
-        lat, lon = punkt
-        if counter % number_of_points == 0 or len(digits) == 0:
-            letter_index += 1
-            counter = 0
-            digits = list(range(1, number_of_points + 1))
-
-        point_name = f'{letters[letter_index]}{digits.pop()}'
-        newpoint = kml.newpoint(name=point_name, coords=[(lon, lat)])
-        newpoint.style.iconstyle.color = simplekml.Color.aquamarine
-        counter += 1
-    kml.save(filename)
-    print(f"Lista punktów została zapisana do pliku {filename}")
-
-
-def save_to_txt(points: list[(float, float)]) -> None:
-    """ Saves list of points to TXT file 'siatka.txt'"""
-    gridy = pd.DataFrame(points, columns=['Latitude', 'Longitude'])
-    gridy.to_csv('siatka.txt', index=False)
