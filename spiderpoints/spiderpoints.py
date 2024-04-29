@@ -33,7 +33,7 @@ class InputsParser:
 
 
 class SpiderPoints:
-    """ Provide vars of type string."""
+    """ Provide inputs of type string."""
 
     def __init__(self, initial_coordinates: str, number_of_points: str, distance_between_points: str):
         self.initial_coordinates = initial_coordinates
@@ -55,20 +55,19 @@ class SpiderPoints:
             grid.extend(punkty_w_dol)
         return grid
 
-    def create_kml_gpx(self):
+    def create_kml_gpx(self, filename="punkty"):
         """ Creates a KML file with based on given anchor point, number of points in each line of grid and
         distance between those points. The grid is created in directions form right to left( West to East) and
         from top to bottom ( North to South ) from the anchor point """
         grid = self._list_points()
 
-        nazwa_pliku_kml = "punkty.kml"
         KMLCreator(
             list_of_points=grid,
-            filename=nazwa_pliku_kml,
+            filename=f'{filename}.kml',
             number_of_points=self.number_of_points
         ).create_kml_file()
         Converter(
-            kml_filename=nazwa_pliku_kml
-        ).convert_to_gpx(gpx_filename="punkty.gpx")
+            kml_filename=filename
+        ).convert_to_gpx(gpx_filename=f"{filename}.gpx")
 
         return len(grid)
