@@ -9,7 +9,7 @@ The grid is saved in two files that are readable by various navigation applicati
 
 <h2>Installation</h2>
 To install package place the installation file in the root directory , then use this command: 
-<code>pip install spiderpoints-0.0.9.tar.gz</code>
+<code>pip install .</code>
 <br>
 
 <h2>Usage</h2>
