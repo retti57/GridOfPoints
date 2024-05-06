@@ -41,7 +41,7 @@ class KMLCreator:
 class Converter:
 
     def __init__(self, kml_filename: str):
-        self.kml_filename = kml_filename
+        self.kml_filename = f'{kml_filename}.kml'
 
     def convert_to_gpx(self, gpx_filename):
         """ Opens a file and parse its KML content. The name and coordinates of each point are transitioned to new file.
