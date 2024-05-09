@@ -55,12 +55,20 @@ class SpiderPoints:
             grid.extend(punkty_w_dol)
         return grid
 
+    @staticmethod
+    def _clear_dir() -> None:
+        import os
+        for _, _, files in os.walk(os.getcwd()):
+            for f in files:
+                if f.endswith('.kml') or f.endswith('.gpx'):
+                    os.remove(f)
+
     def create_kml_gpx(self, filename="punkty"):
         """ Creates a KML file with based on given anchor point, number of points in each line of grid and
         distance between those points. The grid is created in directions form right to left( West to East) and
         from top to bottom ( North to South ) from the anchor point """
         grid = self._list_points()
-
+        self._clear_dir()
         KMLCreator(
             list_of_points=grid,
             filename=f'{filename}.kml',
