@@ -1,3 +1,4 @@
+import sys
 import tkinter as tk
 from spiderpoints.spiderpoints import SpiderPoints
 
@@ -10,9 +11,10 @@ def generate_kml():
 
     SpiderPoints(
         initial_coordinates=point_coord,
-        number_of_points=int(occurrence),
-        distance_between_points=int(distance)
+        number_of_points=occurrence,
+        distance_between_points=distance
     ).create_kml_gpx()
+    sys.exit()
 
 
 # Tworzenie głównego okna
@@ -40,7 +42,7 @@ entry_distance = tk.Entry(root)
 entry_distance.pack()
 
 # Przycisk "Generuj KML"
-button_kml = tk.Button(root, text="Generuj KML", command=generate_kml)
+button_kml = tk.Button(root, text="KML i GPX", command=generate_kml)
 button_kml.pack()
 
 # Rozpoczęcie pętli głównej programu
