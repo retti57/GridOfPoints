@@ -1,5 +1,5 @@
 from geopy.distance import distance
-from spiderpoints.kml_to_gpx_converter import Converter, KMLCreator
+from spiderpoints_classes.kml_to_gpx_converter import Converter, KMLCreator
 
 
 class InputsParser:

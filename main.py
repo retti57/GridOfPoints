@@ -1,5 +1,4 @@
-from spiderpoints.spiderpoints import SpiderPoints
-
+from spiderpoints_classes.spiderpoints import SpiderPoints
 
 
 if __name__ == '__main__':

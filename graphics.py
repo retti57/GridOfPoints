@@ -1,6 +1,6 @@
 import sys
 import tkinter as tk
-from spiderpoints.spiderpoints import SpiderPoints
+from spiderpoints_classes.spiderpoints import SpiderPoints
 
 
 def generate_kml():
